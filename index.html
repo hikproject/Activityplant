@@ -402,6 +402,26 @@
       0% { transform: scale(0.5); opacity: 0.8;}
       100% {transform: scale(2); opacity: 0;}
     }
+    .dragon-watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80vw;
+      max-width: 1200px;
+      height: auto;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: screen;
+      filter: blur(0.5px);
+    }
+    @media (max-width: 768px) {
+      .dragon-watermark {
+        width: 90vw;
+        opacity: 0.06;
+      }
+    }
     .time-indicator {
       position: fixed;
       top: 20px;
@@ -556,6 +576,8 @@
    <div class="red-accent-bg"></div>
    <!-- Grid Background -->
    <div class="grid-bg absolute inset-0"></div>
+   <!-- Dragon Watermark Background -->
+   <img src="dragon.png" alt="Dragon Watermark" class="dragon-watermark">
    <!-- Data Flow Lines -->
    <div class="data-flow" id="dataFlow"></div>
    <!-- Light Sweep -->
@@ -591,7 +613,7 @@
      <div class="pulse-ring" id="pulseRing1"></div>
      <div class="pulse-ring" id="pulseRing2" style="animation-delay: 0.5s"></div>
      <h2 id="mainThemeCombinedDisplay"
-         class="font-orbitron text-3xl md:text-5xl lg:text-7xl font-black text-white tracking-wider"
+         class="font-orbitron text-3xl md:text-5xl lg:text-7xl font-black text-white tracking-wider relative z-10"
          style="line-height: 1.1;">
       <span class="block"
         style="color:#fff;">
@@ -623,9 +645,9 @@
    <div class="section" id="section4" style="display: none"></div>
    <!-- Section 5: Klimaks (18-22s) -->
    <div class="section" id="section5">
-    <div class="text-center">
-     <h2 id="closingLine1Display" class="font-orbitron text-4xl md:text-6xl lg:text-8xl font-black text-white mb-4" style="text-shadow:0 0 16px #ff303077">MOVING FORWARD</h2>
-     <h2 id="closingLine2Display" class="font-orbitron text-4xl md:text-6xl lg:text-8xl font-black glow-text" style="color: #ff3030;">TOGETHER</h2>
+    <div class="text-center relative">
+     <h2 id="closingLine1Display" class="font-orbitron text-4xl md:text-6xl lg:text-8xl font-black text-white mb-4 relative z-10" style="text-shadow:0 0 16px #ff303077">MOVING FORWARD</h2>
+     <h2 id="closingLine2Display" class="font-orbitron text-4xl md:text-6xl lg:text-8xl font-black glow-text relative z-10" style="color: #ff3030;">TOGETHER</h2>
     </div>
    </div>
    <!-- Section 6: Closing (23-25s) -->

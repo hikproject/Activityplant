@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT Leoco Indonesia - Activity Plan 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { overflow: hidden; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+        .particles { position: absolute; width: 100%; height: 100%; overflow: hidden; }
+        .particle { position: absolute; background: rgba(220, 38, 38, 0.3); border-radius: 50%; animation: float linear infinite; }
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        .geometric-shape { position: absolute; border: 2px solid rgba(220, 38, 38, 0.3); animation: rotate360 20s linear infinite; }
+        @keyframes rotate360 {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .geometric-shape.reverse { animation: rotateReverse 15s linear infinite; }
+        @keyframes rotateReverse {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .glow-line { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.8), transparent); animation: moveLine 8s ease-in-out infinite; }
+        @keyframes moveLine {
+            0%, 100% { transform: translateX(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(200%); }
+        }
+
+        .corner-ornament {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            border: 3px solid rgba(220, 38, 38, 0.2);
+            pointer-events: none;
+            z-index: 10;
+        }
+        .top-left { top: 0; left: 0; border-right: none; border-bottom: none; border-radius: 0 0 100% 0; }
+        .top-right { top: 0; right: 0; border-left: none; border-bottom: none; border-radius: 0 0 0 100%; }
+        .bottom-left { bottom: 0; left: 0; border-right: none; border-top: none; border-radius: 0 100% 0 0; }
+        .bottom-right { bottom: 0; right: 0; border-left: none; border-top: none; border-radius: 100% 0 0 0; }
+
+        .sparkle { position: absolute; width: 4px; height: 4px; background: white; border-radius: 50%; animation: sparkleAnim 2s ease-in-out infinite; box-shadow: 0 0 10px rgba(255,255,255,0.8);}
+        @keyframes sparkleAnim {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        .radial-pulse { position: absolute; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(220,38,38,0.3) 0%, transparent 70%); animation: pulse 4s ease-in-out infinite; }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.5); opacity: 0.6; }
+        }
+
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.5);}
+            100% { opacity: 1; transform: scale(1);}
+        }
+        @keyframes slideInLeft {
+            0% { opacity: 0; transform: translateX(-100px);}
+            100% { opacity: 1; transform: translateX(0);}
+        }
+        @keyframes slideInRight {
+            0% { opacity: 0; transform: translateX(100px);}
+            100% { opacity: 1; transform: translateX(0);}
+        }
+        @keyframes expandLine {
+            0% { width: 0;}
+            100% { width: 100%; max-width: 500px;}
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1;}
+            100% { opacity: 0; visibility: hidden;}
+        }
+        @keyframes cardFadeInUp {
+            0% { opacity: 0; transform: translateY(60px) scale(0.95);}
+            100% { opacity: 1; transform: translateY(0) scale(1);}
+        }
+        @keyframes cardFadeOut {
+            0% { opacity: 1; transform: translateY(0) scale(1);}
+            100% { opacity: 0; transform: translateY(-60px) scale(0.95);}
+        }
+        @keyframes juryZoomIn {
+            0% { opacity: 0; transform: scale(0.8);}
+            100% { opacity: 1; transform: scale(1);}
+        }
+        @keyframes glowPulse {
+            0%,100% { box-shadow: 0 0 30px rgba(220,38,38,0.6), 0 0 60px rgba(220,38,38,0.4), 0 0 90px rgba(220,38,38,0.2);}
+            50% { box-shadow: 0 0 50px rgba(220,38,38,0.9), 0 0 100px rgba(220,38,38,0.6), 0 0 150px rgba(220,38,38,0.3);}
+        }
+        .intro-screen { animation: fadeOut 1s ease-in-out forwards; animation-delay: 5.5s; }
+        .company-name { animation: fadeInScale 1.2s ease-out forwards; }
+        .divider { animation: expandLine 1.5s ease-out forwards; animation-delay: 1.5s; }
+        .year-text { animation: slideInLeft 1s ease-out forwards; animation-delay: 2s; }
+        .tagline-text { animation: slideInRight 1s ease-out forwards; animation-delay: 2.8s; }
+
+        .card { display: none; animation: cardFadeInUp 0.8s ease-out forwards;}
+        .card.active { display: flex;}
+        .card.fade-out { animation: cardFadeOut 0.6s ease-out forwards;}
+
+        .jury-card,
+        .panitia-card,
+        .ending-card {
+            display: none;
+            animation: juryZoomIn 2s ease-out forwards, glowPulse 3s ease-in-out infinite;
+        }
+        .jury-card.active,
+        .panitia-card.active,
+        .ending-card.active {
+            display: flex;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-black via-red-950 to-gray-900 min-h-screen relative">
+    <!-- Corner Ornaments -->
+    <div class="corner-ornament top-left"></div>
+    <div class="corner-ornament top-right"></div>
+    <div class="corner-ornament bottom-left"></div>
+    <div class="corner-ornament bottom-right"></div>
+    <!-- Particle Background -->
+    <div class="particles" id="particles"></div>
+    <!-- Geometric Shapes -->
+    <div id="geometricShapes"></div>
+    <!-- Glowing Lines -->
+    <div id="glowingLines"></div>
+    <!-- Sparkles -->
+    <div id="sparkles"></div>
+    <!-- Radial Pulses -->
+    <div id="radialPulses"></div>
+
+    <!-- Intro Screen -->
+    <div class="intro-screen fixed inset-0 flex items-center justify-center z-50 bg-gradient-to-br from-black via-red-950 to-red-900">
+        <!-- Decorative corner stars -->
+        <div class="absolute top-10 left-10 text-red-500 text-6xl opacity-20">✦</div>
+        <div class="absolute top-10 right-10 text-red-500 text-6xl opacity-20">✦</div>
+        <div class="absolute bottom-10 left-10 text-red-500 text-6xl opacity-20">✦</div>
+        <div class="absolute bottom-10 right-10 text-red-500 text-6xl opacity-20">✦</div>
+        <div class="text-center px-6">
+            <div class="company-name opacity-0">
+                <h1 class="text-7xl md:text-9xl font-black text-red-500 tracking-tight mb-3">PT LEOCO INDONESIA</h1>
+            </div>
+            <div class="divider h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent mx-auto my-10 opacity-0" style="width: 0;"></div>
+            <div class="year-text opacity-0 mb-6">
+                <p class="text-4xl md:text-6xl font-bold text-red-400">Activity Plan 2026</p>
+            </div>
+            <div class="tagline-text opacity-0">
+                <p class="text-2xl md:text-4xl font-semibold text-gray-200 italic">"Relentless Effort Powered by Smart Automation"</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="fixed inset-0 flex items-center justify-center p-6">
+        <!-- Department Cards -->
+        <div id="cardContainer" class="w-full max-w-4xl">
+            <!-- HRD & GA -->
+            <div class="card flex-col bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-red-800 relative">
+                <div class="absolute top-4 left-4 w-16 h-16 border-4 border-red-500 rounded-full opacity-30"></div>
+                <div class="absolute top-4 right-4 w-12 h-12 border-4 border-red-600 rotate-45 opacity-20"></div>
+                <div class="w-full aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=675&fit=crop" alt="HRD & GA" class="w-full h-full object-cover">
+                </div>
+                <div class="p-12 text-center relative">
+                    <div class="absolute inset-0 border-t-4 border-red-900/30"></div>
+                    <h2 class="text-5xl md:text-6xl font-black text-red-400 uppercase tracking-widest">HRD & GA</h2>
+                </div>
+            </div>
+            <!-- IT -->
+            <div class="card flex-col bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-red-800 relative">
+                <div class="absolute top-4 left-4 w-16 h-16 border-4 border-red-500 rounded-full opacity-30"></div>
+                <div class="absolute top-4 right-4 w-12 h-12 border-4 border-red-600 rotate-45 opacity-20"></div>
+                <div class="w-full aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=675&fit=crop" alt="IT" class="w-full h-full object-cover">
+                </div>
+                <div class="p-12 text-center relative">
+                    <div class="absolute inset-0 border-t-4 border-red-900/30"></div>
+                    <h2 class="text-5xl md:text-6xl font-black text-red-400 uppercase tracking-widest">IT</h2>
+                </div>
+            </div>
+            <!-- MARKETING -->
+            <div class="card flex-col bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-red-800 relative">
+                <div class="absolute top-4 left-4 w-16 h-16 border-4 border-red-500 rounded-full opacity-30"></div>
+                <div class="absolute top-4 right-4 w-12 h-12 border-4 border-red-600 rotate-45 opacity-20"></div>
+                <div class="w-full aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=675&fit=crop" alt="Marketing" class="w-full h-full object-cover">
+                </div>
+                <div class="p-12 text-center relative">
+                    <div class="absolute inset-0 border-t-4 border-red-900/30"></div>
+                    <h2 class="text-5xl md:text-6xl font-black text-red-400 uppercase tracking-widest">Marketing</h2>
+                </div>
+            </div>
+            <!-- PPIC -->
+            <div class="card flex-col bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-red-800 relative">
+                <div class="absolute top-4 left-4 w-16 h-16 border-4 border-red-500 rounded-full opacity-30"></div>
+                <div class="absolute top-4 right-4 w-12 h-12 border-4 border-red-600 rotate-45 opacity-20"></div>
+                <div class="w-full aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&h=675&fit=crop" alt="PPIC" class="w-full h-full object-cover">
+                </div>
+                <div class="p-12 text-center relative">
+                    <div class="absolute inset-0 border-t-4 border-red-900/30"></div>
+                    <h2 class="text-5xl md:text-6xl font-black text-red-400 uppercase tracking-widest">PPIC</h2>
+                </div>
+            </div>
+            <!-- PURCHASING -->
+            <div class="card flex-col bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-red-800 relative">
+                <div class="absolute top-4 left-4 w-16 h-16 border-4 border-red-500 rounded-full opacity-30"></div>
+                <div class="absolute top-4 right-4 w-12 h-12 border-4 border-red-600 rotate-45 opacity-20"></div>
+                <div class="w-full aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=675&fit=crop" alt="Purchasing" class="w-full h-full object-cover">
+                </div>
+                <div class="p-12 text-center relative">
+                    <div class="absolute inset-0 border-t-4 border-red-900/30"></div>
+                    <h2 class="text-5xl md:text-6xl font-black text-red-400 uppercase tracking-widest">Purchasing</h2>
+                </div>
+            </div>
+            <!-- PRODUKSI -->
+            <div class="card flex-col bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-red-800 relative">
+                <div class="absolute top-4 left-4 w-16 h-16 border-4 border-red-500 rounded-full opacity-30"></div>
+                <div class="absolute top-4 right-4 w-12 h-12 border-4 border-red-600 rotate-45 opacity-20"></div>
+                <div class="w-full aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=675&fit=crop" alt="Produksi" class="w-full h-full object-cover">
+                </div>
+                <div class="p-12 text-center relative">
+                    <div class="absolute inset-0 border-t-4 border-red-900/30"></div>
+                    <h2 class="text-5xl md:text-6xl font-black text-red-400 uppercase tracking-widest">Produksi</h2>
+                </div>
+            </div>
+            <!-- QA -->
+            <div class="card flex-col bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-red-800 relative">
+                <div class="absolute top-4 left-4 w-16 h-16 border-4 border-red-500 rounded-full opacity-30"></div>
+                <div class="absolute top-4 right-4 w-12 h-12 border-4 border-red-600 rotate-45 opacity-20"></div>
+                <div class="w-full aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=675&fit=crop" alt="QA" class="w-full h-full object-cover">
+                </div>
+                <div class="p-12 text-center relative">
+                    <div class="absolute inset-0 border-t-4 border-red-900/30"></div>
+                    <h2 class="text-5xl md:text-6xl font-black text-red-400 uppercase tracking-widest">QA-QC</h2>
+                </div>
+            </div>
+            <!-- ENGINEERING -->
+            <div class="card flex-col bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-red-800 relative">
+                <div class="absolute top-4 left-4 w-16 h-16 border-4 border-red-500 rounded-full opacity-30"></div>
+                <div class="absolute top-4 right-4 w-12 h-12 border-4 border-red-600 rotate-45 opacity-20"></div>
+                <div class="w-full aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1200&h=675&fit=crop" alt="Engineering" class="w-full h-full object-cover">
+                </div>
+                <div class="p-12 text-center relative">
+                    <div class="absolute inset-0 border-t-4 border-red-900/30"></div>
+                    <h2 class="text-5xl md:text-6xl font-black text-red-400 uppercase tracking-widest">Engineering</h2>
+                </div>
+            </div>
+            <!-- WAREHOUSE -->
+            <div class="card flex-col bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-red-800 relative">
+                <div class="absolute top-4 left-4 w-16 h-16 border-4 border-red-500 rounded-full opacity-30"></div>
+                <div class="absolute top-4 right-4 w-12 h-12 border-4 border-red-600 rotate-45 opacity-20"></div>
+                <div class="w-full aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=1200&h=675&fit=crop" alt="Warehouse" class="w-full h-full object-cover">
+                </div>
+                <div class="p-12 text-center relative">
+                    <div class="absolute inset-0 border-t-4 border-red-900/30"></div>
+                    <h2 class="text-5xl md:text-6xl font-black text-red-400 uppercase tracking-widest">Warehouse</h2>
+                </div>
+            </div>
+            <!-- MAINTENANCE -->
+            <div class="card flex-col bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-red-800 relative">
+                <div class="absolute top-4 left-4 w-16 h-16 border-4 border-red-500 rounded-full opacity-30"></div>
+                <div class="absolute top-4 right-4 w-12 h-12 border-4 border-red-600 rotate-45 opacity-20"></div>
+                <div class="w-full aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1200&h=675&fit=crop" alt="Maintenance" class="w-full h-full object-cover">
+                </div>
+                <div class="p-12 text-center relative">
+                    <div class="absolute inset-0 border-t-4 border-red-900/30"></div>
+                    <h2 class="text-5xl md:text-6xl font-black text-red-400 uppercase tracking-widest">Maintenance</h2>
+                </div>
+            </div>
+
+            <!-- JURY CARD (Special) -->
+            <div class="jury-card flex-col bg-gradient-to-br from-red-900 via-red-800 to-red-950 rounded-3xl overflow-hidden shadow-2xl border-4 border-red-500 relative">
+                <!-- Decorative corner elements -->
+                <div class="absolute top-6 left-6 w-20 h-20 border-4 border-yellow-400 rounded-full opacity-40 z-10"></div>
+                <div class="absolute top-6 right-6 w-20 h-20 border-4 border-yellow-400 rounded-full opacity-40 z-10"></div>
+                <div class="absolute bottom-32 left-6 w-16 h-16 border-4 border-yellow-500 rotate-45 opacity-30 z-10"></div>
+                <div class="absolute bottom-32 right-6 w-16 h-16 border-4 border-yellow-500 rotate-45 opacity-30 z-10"></div>
+                <!-- Star ornaments -->
+                <div class="absolute top-20 left-1/4 text-yellow-400 text-5xl opacity-30 z-10">★</div>
+                <div class="absolute top-20 right-1/4 text-yellow-400 text-5xl opacity-30 z-10">★</div>
+                <div class="w-full aspect-video overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200&h=675&fit=crop" alt="Jury" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-red-900/80 to-transparent"></div>
+                </div>
+                <div class="p-16 text-center relative">
+                    <div class="absolute inset-0 border-t-4 border-yellow-600/30"></div>
+                    <div class="inline-block px-8 py-3 bg-red-600 rounded-full mb-6 border-2 border-yellow-500/50">
+                        <span class="text-sm font-bold text-white uppercase tracking-widest">Special Committee</span>
+                    </div>
+                    <h2 class="text-7xl md:text-8xl font-black text-white uppercase tracking-widest mb-4 drop-shadow-2xl">JURY</h2>
+                    <p class="text-2xl md:text-3xl text-red-100 font-semibold">Evaluation & Assessment Board</p>
+                    <div class="mt-8 flex justify-center gap-2">
+                        <div class="w-12 h-1 bg-yellow-500 rounded-full"></div>
+                        <div class="w-12 h-1 bg-yellow-400 rounded-full"></div>
+                        <div class="w-12 h-1 bg-yellow-500 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANITIA CARD (Special) -->
+            <div class="panitia-card flex-col bg-gradient-to-br from-yellow-600 via-yellow-500 to-yellow-700 rounded-3xl overflow-hidden shadow-2xl border-4 border-yellow-400 relative justify-center items-center">
+                <!-- Decorative corner elements -->
+                <div class="absolute top-6 left-6 w-20 h-20 border-4 border-red-500 rounded-full opacity-30 z-10"></div>
+                <div class="absolute top-6 right-6 w-20 h-20 border-4 border-red-500 rounded-full opacity-30 z-10"></div>
+                <div class="absolute bottom-32 left-6 w-16 h-16 border-4 border-red-400 rotate-45 opacity-20 z-10"></div>
+                <div class="absolute bottom-32 right-6 w-16 h-16 border-4 border-red-400 rotate-45 opacity-20 z-10"></div>
+                <!-- Star ornaments -->
+                <div class="absolute top-20 left-1/4 text-red-500 text-5xl opacity-20 z-10">★</div>
+                <div class="absolute top-20 right-1/4 text-red-500 text-5xl opacity-20 z-10">★</div>
+                <div class="w-full aspect-video overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&h=675&fit=crop" alt="Panitia" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-yellow-800/80 to-transparent"></div>
+                </div>
+                <div class="p-16 text-center relative">
+                    <div class="absolute inset-0 border-t-4 border-red-600/30"></div>
+                    <div class="inline-block px-8 py-3 bg-yellow-500 rounded-full mb-6 border-2 border-red-500/50">
+                        <span class="text-sm font-bold text-white uppercase tracking-widest">Organizing Committee</span>
+                    </div>
+                    <h2 class="text-7xl md:text-8xl font-black text-white uppercase tracking-widest mb-4 drop-shadow-2xl">PANITIA</h2>
+                    <p class="text-2xl md:text-3xl text-yellow-50 font-semibold">Activity Plan 2026 Team</p>
+                    <div class="mt-8 flex justify-center gap-2">
+                        <div class="w-12 h-1 bg-red-500 rounded-full"></div>
+                        <div class="w-12 h-1 bg-yellow-500 rounded-full"></div>
+                        <div class="w-12 h-1 bg-red-500 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ENDING CARD / BACK TO AWAL -->
+            <div class="ending-card flex-col items-center justify-center bg-gradient-to-br from-black via-red-950 to-gray-900 rounded-3xl overflow-hidden shadow-2xl border-4 border-red-300 relative z-20">
+                <!-- Copy from intro screen, similar style -->
+                <div class="w-full flex flex-col items-center justify-center py-24 px-6 relative">
+                    <div class="company-name opacity-0" style="opacity:1; animation: fadeInScale 1.2s ease-out forwards;">
+                        <h1 class="text-7xl md:text-9xl font-black text-red-500 tracking-tight mb-3">PT LEOCO INDONESIA</h1>
+                    </div>
+                    <div class="divider h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent mx-auto my-10" style="width:0; max-width:500px; animation: expandLine 1.5s ease-out forwards 1.5s; opacity:1;"></div>
+                    <div class="year-text opacity-0 mb-6" style="opacity:1; animation: slideInLeft 1s ease-out forwards 2s;">
+                        <p class="text-4xl md:text-6xl font-bold text-red-400">Activity Plan 2026</p>
+                    </div>
+                    <div class="tagline-text opacity-0" style="opacity:1; animation: slideInRight 1s ease-out forwards 2.8s;">
+                        <p class="text-2xl md:text-4xl font-semibold text-gray-200 italic">"Relentless Effort Powered by Smart Automation"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create particle background
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 40;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 6 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        // Create geometric shapes
+        function createGeometricShapes() {
+            const container = document.getElementById('geometricShapes');
+            const shapes = [
+                { type: 'square', size: 100, top: '10%', left: '5%' },
+                { type: 'circle', size: 80, top: '20%', right: '8%', reverse: true },
+                { type: 'square', size: 120, bottom: '15%', left: '10%', reverse: true },
+                { type: 'circle', size: 150, bottom: '20%', right: '5%' },
+                { type: 'square', size: 60, top: '50%', left: '3%' },
+                { type: 'circle', size: 90, top: '60%', right: '4%', reverse: true },
+            ];
+            shapes.forEach(shape => {
+                const element = document.createElement('div');
+                element.className = `geometric-shape ${shape.reverse ? 'reverse' : ''}`;
+                element.style.width = shape.size + 'px';
+                element.style.height = shape.size + 'px';
+                if (shape.type === 'circle') element.style.borderRadius = '50%';
+                if (shape.top) element.style.top = shape.top;
+                if (shape.bottom) element.style.bottom = shape.bottom;
+                if (shape.left) element.style.left = shape.left;
+                if (shape.right) element.style.right = shape.right;
+                container.appendChild(element);
+            });
+        }
+        // Create glowing lines
+        function createGlowingLines() {
+            const container = document.getElementById('glowingLines');
+            const lines = [
+                { top: '20%', width: '60%', delay: '0s' },
+                { top: '40%', width: '70%', delay: '2s' },
+                { top: '60%', width: '50%', delay: '4s' },
+                { top: '80%', width: '65%', delay: '6s' },
+            ];
+            lines.forEach(line => {
+                const element = document.createElement('div');
+                element.className = 'glow-line';
+                element.style.top = line.top;
+                element.style.width = line.width;
+                element.style.animationDelay = line.delay;
+                container.appendChild(element);
+            });
+        }
+        // Create sparkles
+        function createSparkles() {
+            const container = document.getElementById('sparkles');
+            const sparkleCount = 30;
+            for (let i = 0; i < sparkleCount; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                sparkle.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+                container.appendChild(sparkle);
+            }
+        }
+        // Create radial pulses
+        function createRadialPulses() {
+            const container = document.getElementById('radialPulses');
+            const pulses = [
+                { top: '10%', left: '15%', delay: '0s' },
+                { top: '70%', right: '10%', delay: '1.5s' },
+                { bottom: '10%', left: '20%', delay: '3s' },
+            ];
+            pulses.forEach(pulse => {
+                const element = document.createElement('div');
+                element.className = 'radial-pulse';
+                if (pulse.top) element.style.top = pulse.top;
+                if (pulse.bottom) element.style.bottom = pulse.bottom;
+                if (pulse.left) element.style.left = pulse.left;
+                if (pulse.right) element.style.right = pulse.right;
+                element.style.animationDelay = pulse.delay;
+                container.appendChild(element);
+            });
+        }
+
+        // Sequential card animation with Panitia & Ending
+        function startCardSequence() {
+            const cards = document.querySelectorAll('.card');
+            const juryCard = document.querySelector('.jury-card');
+            const panitiaCard = document.querySelector('.panitia-card');
+            const endingCard = document.querySelector('.ending-card');
+            const introScreen = document.querySelector('.intro-screen');
+            let currentIndex = 0;
+            const cardDuration = 2000;
+            const fadeOutDuration = 600;
+
+            setTimeout(() => {
+                introScreen.classList.add('hidden');
+                showNextCard();
+            }, 6000);
+
+            function showNextCard() {
+                if (currentIndex < cards.length) {
+                    cards[currentIndex].classList.add('active');
+                    setTimeout(() => {
+                        cards[currentIndex].classList.add('fade-out');
+                        setTimeout(() => {
+                            cards[currentIndex].classList.remove('active','fade-out');
+                            currentIndex++;
+                            showNextCard();
+                        }, fadeOutDuration);
+                    }, cardDuration);
+                } else {
+                    // Show jury card
+                    setTimeout(() => {
+                        juryCard.classList.add('active');
+                        setTimeout(() => {
+                            juryCard.classList.add('fade-out');
+                            setTimeout(() => {
+                                juryCard.classList.remove('active','fade-out');
+                                // Show panitia card
+                                panitiaCard.classList.add('active');
+                                setTimeout(() => {
+                                    panitiaCard.classList.add('fade-out');
+                                    setTimeout(() => {
+                                        panitiaCard.classList.remove('active', 'fade-out');
+                                        // Show Ending card like intro screen
+                                        endingCard.classList.add('active');
+                                    }, fadeOutDuration);
+                                }, 2000);
+                            }, fadeOutDuration);
+                        }, 2500);
+                    }, 500);
+                }
+            }
+        }
+
+        // Initialize all effects
+        createParticles();
+        createGeometricShapes();
+        createGlowingLines();
+        createSparkles();
+        createRadialPulses();
+        startCardSequence();
+    </script>
+</body>
+</html>
