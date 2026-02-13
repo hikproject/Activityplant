@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity Plan 2026 - Award Ceremony</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Rajdhani:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    .app-container {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    .font-orbitron { font-family: 'Orbitron', monospace; }
+    .font-rajdhani { font-family: 'Rajdhani', sans-serif; }
+    
+    /* ========== GRID BACKGROUND (tetap ada) ========== */
+    .grid-bg {
+      background-image: 
+        linear-gradient(rgba(139, 0, 0, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139, 0, 0, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+    }
+    @keyframes gridMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 50px 50px; }
+    }
+    
+    /* ========== LIGHT BEAM ========== */
+    .light-beam {
+      position: absolute;
+      width: 200%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #FF1E1E, transparent);
+      animation: beamScan 4s ease-in-out infinite;
+      opacity: 0.6;
+    }
+    @keyframes beamScan {
+      0%, 100% { transform: translateX(-50%); }
+      50% { transform: translateX(0%); }
+    }
+    
+    /* ========== RED PULSE ========== */
+    .red-pulse {
+      animation: redPulse 2s ease-in-out infinite;
+    }
+    @keyframes redPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(255, 30, 30, 0.5); }
+      50% { box-shadow: 0 0 40px rgba(255, 30, 30, 0.8), 0 0 60px rgba(139, 0, 0, 0.4); }
+    }
+    
+    /* ========== GLOW TEXT ========== */
+    .text-glow {
+      text-shadow: 0 0 10px rgba(255, 30, 30, 0.8), 0 0 20px rgba(255, 30, 30, 0.5), 0 0 30px rgba(139, 0, 0, 0.3);
+    }
+    .text-glow-mega {
+      text-shadow: 
+        0 0 15px rgba(255, 30, 30, 1),
+        0 0 30px rgba(255, 30, 30, 1),
+        0 0 50px rgba(255, 30, 30, 0.9),
+        0 0 80px rgba(255, 30, 30, 0.7),
+        0 0 120px rgba(139, 0, 0, 0.5),
+        0 0 160px rgba(139, 0, 0, 0.3);
+      animation: megaGlowPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes megaGlowPulse {
+      0%, 100% {
+        text-shadow: 
+          0 0 15px rgba(255, 30, 30, 1),
+          0 0 30px rgba(255, 30, 30, 0.9),
+          0 0 50px rgba(255, 30, 30, 0.7),
+          0 0 80px rgba(139, 0, 0, 0.4);
+      }
+      50% {
+        text-shadow: 
+          0 0 25px rgba(255, 30, 30, 1),
+          0 0 50px rgba(255, 30, 30, 1),
+          0 0 80px rgba(255, 30, 30, 0.9),
+          0 0 120px rgba(139, 0, 0, 0.6),
+          0 0 180px rgba(139, 0, 0, 0.3);
+      }
+    }
+    
+    /* ========== SCAN LINE ========== */
+    .scan-line {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent 0%, #FF1E1E 50%, transparent 100%);
+      animation: scanDown 2s ease-out forwards;
+    }
+    @keyframes scanDown {
+      0% { top: 0; opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+    
+    /* ========== PARTICLE / SPARK ========== */
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #FF1E1E;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .spark {
+      position: absolute;
+      width: 2px;
+      height: 8px;
+      background: linear-gradient(to bottom, #FF1E1E, transparent);
+      animation: sparkFall 1.5s ease-out forwards;
+    }
+    @keyframes sparkFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(200px) rotate(45deg); opacity: 0; }
+    }
+    
+    /* ========== EXPLOSION RING ========== */
+    .explosion-ring {
+      position: absolute;
+      border: 3px solid #FF1E1E;
+      border-radius: 50%;
+      animation: explode 1s ease-out forwards;
+    }
+    @keyframes explode {
+      0% { width: 0; height: 0; opacity: 1; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+      100% { width: 800px; height: 800px; opacity: 0; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+    }
+    
+    /* ========== PULSE RING ========== */
+    .pulse-ring {
+      position: absolute;
+      border: 3px solid #FF1E1E;
+      border-radius: 50%;
+      animation: pulseRing 1.2s ease-out forwards;
+    }
+    @keyframes pulseRing {
+      0% { width: 50px; height: 50px; opacity: 1; }
+      100% { width: 500px; height: 500px; opacity: 0; }
+    }
+    
+    /* ========== LIGHTNING ========== */
+    .lightning {
+      position: absolute;
+      width: 3px;
+      background: linear-gradient(to bottom, transparent, #FF1E1E, transparent);
+      animation: lightningStrike 0.5s ease-out forwards;
+    }
+    @keyframes lightningStrike {
+      0% { height: 0; opacity: 1; }
+      100% { height: 400px; opacity: 0; }
+    }
+    
+    /* ========== SHAKE / GLITCH ========== */
+    .shake { animation: shake 0.4s ease-in-out; }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0) translateY(0); }
+      25% { transform: translateX(-15px) translateY(-10px); }
+      50% { transform: translateX(15px) translateY(10px); }
+      75% { transform: translateX(-10px) translateY(-5px); }
+    }
+    .glitch { animation: glitch 0.3s ease-in-out; }
+    @keyframes glitch {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-3px, 2px); }
+      40% { transform: translate(3px, -2px); }
+      60% { transform: translate(-2px, -3px); }
+      80% { transform: translate(2px, 3px); }
+    }
+    
+    /* ========== MEDAL BOUNCE ========== */
+    .medal-bounce {
+      animation: medalBounce 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      display: inline-block;
+    }
+    @keyframes medalBounce {
+      0% { transform: scale(0) translateY(-300px) rotateZ(-180deg); opacity: 0; }
+      50% { transform: scale(1.2) translateY(30px) rotateZ(10deg); opacity: 1; }
+      75% { transform: scale(1.1) translateY(-15px) rotateZ(-5deg); }
+      100% { transform: scale(1) translateY(0) rotateZ(0deg); opacity: 1; }
+    }
+    
+    /* ========== NAME REVEAL ========== */
+    .name-reveal {
+      animation: nameReveal 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes nameReveal {
+      0% { transform: scale(0) rotateY(180deg); opacity: 0; filter: blur(15px); }
+      50% { transform: scale(1.2) rotateY(-15deg); opacity: 0.8; }
+      100% { transform: scale(1) rotateY(0deg); opacity: 1; filter: blur(0px); }
+    }
+    
+    /* ========== FIRE PARTICLE ========== */
+    .fire-particle {
+      position: absolute;
+      background: radial-gradient(circle, #FF1E1E, #FFD700, transparent);
+      border-radius: 50%;
+      animation: fireBurst 1.8s ease-out forwards;
+    }
+    @keyframes fireBurst {
+      0% { transform: scale(0) translateY(0); opacity: 1; }
+      50% { opacity: 0.8; }
+      100% { transform: scale(1) translateY(-150px); opacity: 0; }
+    }
+    
+    /* ========== COUNTDOWN ========== */
+    .countdown-num {
+      animation: countdownZoom 0.8s ease-out forwards;
+    }
+    @keyframes countdownZoom {
+      0% { transform: scale(3); opacity: 0; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.5); opacity: 0; }
+    }
+    
+    /* ========== CONFETTI ========== */
+    .confetti {
+      position: absolute;
+      animation: confettiFall 3s ease-out forwards;
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(-10px) rotate(0deg) translateX(0); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg) translateX(100px); opacity: 0; }
+    }
+    
+    /* ========== FADE TRANSITIONS ========== */
+    .fade-out { animation: fadeOut 0.7s ease-out forwards; }
+    @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
+    .fade-in { animation: fadeIn 0.7s ease-out forwards; }
+    @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+    .fade-slide-right { animation: fadeSlideRight 0.8s ease-out forwards; }
+    @keyframes fadeSlideRight {
+      0% { transform: translateX(100px); opacity: 0; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+    
+    /* ========== INPUT GLOW ========== */
+    .input-glow:focus {
+      box-shadow: 0 0 20px rgba(255, 30, 30, 0.6), inset 0 0 10px rgba(255, 30, 30, 0.2);
+      border-color: #FF1E1E;
+    }
+    
+    /* ========== BUTTON AUTOMATION ========== */
+    .btn-automation {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-automation::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 30, 30, 0.4), transparent);
+      transition: left 0.5s ease;
+    }
+    .btn-automation:hover::before { left: 100%; }
+    .btn-automation:hover {
+      box-shadow: 0 0 30px rgba(255, 30, 30, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+      transform: scale(1.05);
+    }
+    
+    /* ========== ANIMATED BORDER ========== */
+    .animated-border { position: relative; }
+    .animated-border::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(45deg, #8B0000, #FF1E1E, #8B0000, #FF1E1E);
+      background-size: 400% 400%;
+      border-radius: inherit;
+      z-index: -1;
+      animation: borderGlow 3s ease infinite;
+    }
+    @keyframes borderGlow { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    
+    /* ========== NEW: BACKGROUND MERIAH UNTUK ANNOUNCEMENT ========== */
+    .bg-celebration {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      transition: all 0.8s ease;
+    }
+    
+    /* 🥉 Juara 3 – Bronze Shimmer (gradasi lembut, partikel redup) */
+    .bg-bronze-shimmer {
+      background: radial-gradient(circle at 30% 40%, rgba(205,127,50,0.25) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 70%, rgba(205,127,50,0.2) 0%, transparent 55%),
+                  repeating-linear-gradient(45deg, rgba(205,127,50,0.05) 0px, rgba(205,127,50,0.05) 2px, transparent 2px, transparent 10px);
+      animation: bgSlowDrift 14s infinite alternate, bgTwinkle 4s infinite;
+    }
+    
+    /* 🥈 Juara 2 – Silver Pulse (denyut perak, kilatan) */
+    .bg-silver-pulse {
+      background: radial-gradient(circle at 20% 30%, rgba(192,192,192,0.3) 0%, transparent 60%),
+                  radial-gradient(circle at 90% 60%, rgba(192,192,192,0.25) 0%, transparent 70%),
+                  conic-gradient(from 0deg, rgba(192,192,192,0.1) 0deg, rgba(255,255,255,0.15) 90deg, rgba(192,192,192,0.1) 180deg, transparent 270deg);
+      animation: bgRotate 10s linear infinite, bgPulseSilver 1.8s ease-in-out infinite;
+    }
+    
+    /* 🥇 Juara 1 – Gold Inferno (api emas, berputar, penuh partikel) */
+    .bg-gold-explosion {
+      background: radial-gradient(circle at 30% 40%, rgba(255,215,0,0.45) 0%, rgba(255,30,30,0.3) 40%, transparent 70%),
+                  radial-gradient(circle at 80% 70%, rgba(255,215,0,0.4) 0%, rgba(139,0,0,0.25) 50%, transparent 80%),
+                  repeating-radial-gradient(circle at 20% 30%, rgba(255,215,0,0.1) 2px, transparent 4px, transparent 20px);
+      animation: bgInfernoSpin 8s linear infinite, bgIntensityPulse 1.2s ease-in-out infinite;
+    }
+    
+    /* Animasi pendukung untuk background */
+    @keyframes bgSlowDrift {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 10% 10%; }
+    }
+    @keyframes bgTwinkle {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+    @keyframes bgRotate {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 200% 200%; }
+    }
+    @keyframes bgPulseSilver {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; box-shadow: inset 0 0 100px rgba(192,192,192,0.2); }
+    }
+    @keyframes bgInfernoSpin {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 200% 200%; }
+    }
+    @keyframes bgIntensityPulse {
+      0%, 100% { opacity: 0.9; }
+      50% { opacity: 1; box-shadow: inset 0 0 150px rgba(255,215,0,0.3); }
+    }
+    
+    /* Extra floating sparks untuk Juara 1 */
+    .bg-ember {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="g"><stop offset="0%" stop-color="%23FFD700" stop-opacity="0.8"/><stop offset="100%" stop-color="%23FF1E1E" stop-opacity="0"/></radialGradient></defs><circle cx="15%" cy="30%" r="20" fill="url(%23g)"><animate attributeName="r" values="20;40;20" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite"/></circle><circle cx="85%" cy="70%" r="30" fill="url(%23g)"><animate attributeName="r" values="30;55;30" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0.1;0.5" dur="3s" repeatCount="indefinite"/></circle></svg>');
+      background-size: cover;
+      animation: drift 12s infinite alternate;
+    }
+    
+    .hidden { display: none !important; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full w-full bg-[#0B0B0B] overflow-hidden" oncontextmenu="return false;">
+  <div class="app-container relative">
+    <!-- Animated Background Elements -->
+    <div id="bgEffects" class="absolute inset-0 pointer-events-none overflow-hidden">
+      <div class="grid-bg absolute inset-0"></div>
+      <div class="light-beam top-1/4"></div>
+      <div class="light-beam top-1/2" style="animation-delay: -2s;"></div>
+      <div class="light-beam top-3/4" style="animation-delay: -1s;"></div>
+    </div>
+    <!-- Particle Container -->
+    <div id="particleContainer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+
+    <!-- STATE 1: STANDBY MODE -->
+    <div id="standbyScreen" class="absolute inset-0 flex flex-col items-center justify-center z-10">
+      <div class="text-center">
+        <div class="flex items-center justify-center gap-4 mb-8">
+          <div class="w-3 h-3 bg-[#FF1E1E] rounded-full red-pulse"></div>
+          <span class="font-rajdhani text-gray-500 text-sm tracking-widest">SYSTEM ONLINE</span>
+          <div class="w-3 h-3 bg-[#FF1E1E] rounded-full red-pulse"></div>
+        </div>
+        <h1 id="mainTitle" class="font-orbitron text-5xl md:text-7xl font-black text-white text-glow mb-4">ACTIVITY PLAN 2026</h1>
+        <div class="font-rajdhani text-xl md:text-2xl text-gray-400 tracking-wider mb-2">AWARD CEREMONY SYSTEM</div>
+        <div class="font-orbitron text-[#FF1E1E] text-2xl md:text-3xl text-glow mb-12 mt-8">SYSTEM READY</div>
+        <p id="taglineText" class="font-rajdhani text-gray-500 text-lg mb-12 tracking-wide">"Relentless Effort Powered by Smart Automation"</p>
+        <button id="enterBtn" class="btn-automation font-orbitron text-lg px-12 py-4 bg-gradient-to-r from-[#8B0000] to-[#FF1E1E] text-white rounded-lg red-pulse tracking-wider">ENTER CONTROL PANEL</button>
+        <button id="startAnnouncementBtn" class="hidden btn-automation font-orbitron text-xl px-16 py-6 bg-gradient-to-r from-[#8B0000] to-[#FF1E1E] text-white rounded-lg red-pulse tracking-wider">▶ START ANNOUNCEMENT</button>
+      </div>
+      <div class="absolute bottom-8 left-0 right-0 flex justify-center">
+        <div class="flex items-center gap-8 text-gray-600 font-rajdhani text-sm">
+          <span>◆ SECURE MODE</span> <span>◆ READY</span> <span>◆ v2.026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE 2: CONTROL PANEL (INPUT MODE) -->
+    <div id="controlPanel" class="hidden absolute inset-0 flex flex-col items-center justify-center z-20 bg-[#0B0B0B]/95">
+      <div class="w-full max-w-2xl px-6">
+        <div class="text-center mb-10">
+          <div class="flex items-center justify-center gap-3 mb-4">
+            <div class="w-2 h-2 bg-[#FF1E1E] rounded-full"></div>
+            <span class="font-rajdhani text-[#FF1E1E] text-sm tracking-widest">ADMIN ACCESS GRANTED</span>
+            <div class="w-2 h-2 bg-[#FF1E1E] rounded-full"></div>
+          </div>
+          <h2 class="font-orbitron text-3xl md:text-4xl text-white text-glow">CONTROL PANEL</h2>
+          <p class="font-rajdhani text-gray-500 mt-2">Enter Winner Names Below</p>
+        </div>
+        <div class="space-y-6">
+          <div class="animated-border rounded-xl p-1">
+            <div class="bg-[#0B0B0B] rounded-xl p-6">
+              <label class="flex items-center gap-3 mb-3"> <span class="text-3xl">🥇</span> <span class="font-orbitron text-[#FF1E1E] text-lg">JUARA 1 - CHAMPION</span> </label>
+              <input type="text" id="input1" class="input-glow w-full bg-[#1a1a1a] border-2 border-[#8B0000]/50 rounded-lg px-4 py-3 text-white font-rajdhani text-xl focus:outline-none transition-all" placeholder="Enter Champion Name...">
+            </div>
+          </div>
+          <div class="animated-border rounded-xl p-1">
+            <div class="bg-[#0B0B0B] rounded-xl p-6">
+              <label class="flex items-center gap-3 mb-3"> <span class="text-3xl">🥈</span> <span class="font-orbitron text-gray-400 text-lg">JUARA 2 - RUNNER UP</span> </label>
+              <input type="text" id="input2" class="input-glow w-full bg-[#1a1a1a] border-2 border-[#8B0000]/50 rounded-lg px-4 py-3 text-white font-rajdhani text-xl focus:outline-none transition-all" placeholder="Enter Runner Up Name...">
+            </div>
+          </div>
+          <div class="animated-border rounded-xl p-1">
+            <div class="bg-[#0B0B0B] rounded-xl p-6">
+              <label class="flex items-center gap-3 mb-3"> <span class="text-3xl">🥉</span> <span class="font-orbitron text-gray-400 text-lg">JUARA 3 - THIRD PLACE</span> </label>
+              <input type="text" id="input3" class="input-glow w-full bg-[#1a1a1a] border-2 border-[#8B0000]/50 rounded-lg px-4 py-3 text-white font-rajdhani text-xl focus:outline-none transition-all" placeholder="Enter Third Place Name...">
+            </div>
+          </div>
+        </div>
+        <div class="mt-10 text-center">
+          <button id="lockBtn" class="btn-automation font-orbitron text-lg px-12 py-4 bg-gradient-to-r from-[#8B0000] to-[#FF1E1E] text-white rounded-lg tracking-wider">🔒 LOCK & PREPARE ANNOUNCEMENT</button>
+        </div>
+        <div class="mt-4 text-center">
+          <button id="backBtn" class="font-rajdhani text-gray-500 hover:text-[#FF1E1E] transition-colors">← Back to Standby</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE 3: ANNOUNCEMENT MODE -->
+    <div id="announcementScreen" class="hidden absolute inset-0 flex flex-col items-center justify-center z-30 bg-[#0B0B0B]">
+      <!-- BACKGROUND MERIAH – layer khusus untuk animasi full screen -->
+      <div id="bgCelebration" class="bg-celebration"></div>
+      
+      <!-- Content Container (di atas background) -->
+      <div id="announcementContent" class="relative z-20 text-center px-6 w-full"></div>
+      
+      <!-- Next Button -->
+      <button id="nextBtn" class="hidden absolute bottom-12 btn-automation font-orbitron text-lg px-10 py-3 bg-gradient-to-r from-[#8B0000] to-[#FF1E1E] text-white rounded-lg tracking-wider z-30">NEXT →</button>
+      <!-- Restart Button -->
+      <button id="restartBtn" class="hidden absolute bottom-12 btn-automation font-orbitron text-lg px-10 py-3 bg-gradient-to-r from-[#8B0000] to-[#FF1E1E] text-white rounded-lg tracking-wider z-30">↺ RESTART CEREMONY</button>
+    </div>
+  </div>
+
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      main_title: 'ACTIVITY PLAN 2026',
+      tagline: 'Relentless Effort Powered by Smart Automation',
+      background_color: '#0B0B0B',
+      primary_color: '#FF1E1E',
+      secondary_color: '#8B0000',
+      text_color: '#FFFFFF',
+      accent_color: '#4a4a4a'
+    };
+    
+    // Winner data storage
+    let winners = { first: '', second: '', third: '' };
+    
+    // Current announcement state
+    let currentAnnouncement = 0;
+    
+    // Audio context for sound effects
+    let audioCtx = null;
+    
+    // DOM Elements
+    const standbyScreen = document.getElementById('standbyScreen');
+    const controlPanel = document.getElementById('controlPanel');
+    const announcementScreen = document.getElementById('announcementScreen');
+    const bgCelebration = document.getElementById('bgCelebration');
+    const enterBtn = document.getElementById('enterBtn');
+    const startAnnouncementBtn = document.getElementById('startAnnouncementBtn');
+    const lockBtn = document.getElementById('lockBtn');
+    const backBtn = document.getElementById('backBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const announcementContent = document.getElementById('announcementContent');
+    const particleContainer = document.getElementById('particleContainer');
+    const mainTitle = document.getElementById('mainTitle');
+    const taglineText = document.getElementById('taglineText');
+    
+    // Initialize Audio Context
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+    
+    // Generate tones
+    function playTone(frequency, duration, type = 'sine', volume = 0.3) {
+      try {
+        const ctx = initAudio();
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        oscillator.frequency.value = frequency;
+        oscillator.type = type;
+        gainNode.gain.setValueAtTime(volume, ctx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+        oscillator.start(ctx.currentTime);
+        oscillator.stop(ctx.currentTime + duration);
+      } catch (e) {}
+    }
+    
+    function playSystemActivate() {
+      playTone(220, 0.1, 'square', 0.2);
+      setTimeout(() => playTone(440, 0.1, 'square', 0.2), 100);
+      setTimeout(() => playTone(880, 0.2, 'square', 0.3), 200);
+    }
+    
+    function playSuspense() {
+      let freq = 100;
+      const interval = setInterval(() => {
+        playTone(freq, 0.3, 'sawtooth', 0.1);
+        freq += 20;
+        if (freq > 300) clearInterval(interval);
+      }, 200);
+    }
+    
+    function playDrumroll(duration = 2000) {
+      const ctx = initAudio();
+      const startTime = ctx.currentTime;
+      const endTime = startTime + (duration / 1000);
+      let time = startTime;
+      while (time < endTime) {
+        const noise = ctx.createOscillator();
+        const gain = ctx.createGain();
+        noise.connect(gain);
+        gain.connect(ctx.destination);
+        noise.frequency.value = 100 + Math.random() * 100;
+        noise.type = 'triangle';
+        gain.gain.setValueAtTime(0.1, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+        noise.start(time);
+        noise.stop(time + 0.05);
+        time += 0.03 + Math.random() * 0.02;
+      }
+    }
+    
+    function playImpact() {
+      playTone(60, 0.5, 'sine', 0.5);
+      playTone(80, 0.4, 'square', 0.3);
+      setTimeout(() => playTone(40, 0.3, 'sine', 0.4), 50);
+    }
+    
+    function playVictory() {
+      const notes = [523, 659, 784, 1047];
+      notes.forEach((note, i) => {
+        setTimeout(() => playTone(note, 0.3, 'sine', 0.3), i * 150);
+      });
+    }
+    
+    // Visual effects
+    function createSparks(count = 20) {
+      for (let i = 0; i < count; i++) {
+        const spark = document.createElement('div');
+        spark.className = 'spark';
+        spark.style.left = `${Math.random() * 100}%`;
+        spark.style.top = `${Math.random() * 50}%`;
+        spark.style.animationDuration = `${1 + Math.random()}s`;
+        spark.style.animationDelay = `${Math.random() * 0.5}s`;
+        particleContainer.appendChild(spark);
+        setTimeout(() => spark.remove(), 2000);
+      }
+    }
+    
+    function createExplosion() {
+      for (let i = 0; i < 5; i++) {
+        const ring = document.createElement('div');
+        ring.className = 'explosion-ring';
+        ring.style.animationDelay = `${i * 0.15}s`;
+        particleContainer.appendChild(ring);
+        setTimeout(() => ring.remove(), 1500);
+      }
+    }
+    
+    function createFireBurst(count = 30) {
+      for (let i = 0; i < count; i++) {
+        const fire = document.createElement('div');
+        fire.className = 'fire-particle';
+        fire.style.width = `${10 + Math.random() * 30}px`;
+        fire.style.height = fire.style.width;
+        fire.style.left = `${40 + Math.random() * 20}%`;
+        fire.style.top = `${40 + Math.random() * 20}%`;
+        fire.style.animationDuration = `${1 + Math.random()}s`;
+        fire.style.animationDelay = `${Math.random() * 0.3}s`;
+        particleContainer.appendChild(fire);
+        setTimeout(() => fire.remove(), 2000);
+      }
+    }
+    
+    function createConfetti(count = 50) {
+      const colors = ['#FF1E1E', '#8B0000', '#FFFFFF', '#FFD700'];
+      for (let i = 0; i < count; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.top = `-20px`;
+        confetti.style.width = `${8 + Math.random() * 12}px`;
+        confetti.style.height = confetti.style.width;
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDuration = `${2 + Math.random() * 2}s`;
+        confetti.style.animationDelay = `${Math.random()}s`;
+        particleContainer.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 5000);
+      }
+    }
+    
+    function createPulseRing(color = '#FF1E1E') {
+      const ring = document.createElement('div');
+      ring.className = 'pulse-ring';
+      ring.style.borderColor = color;
+      ring.style.left = '50%';
+      ring.style.top = '50%';
+      announcementScreen.appendChild(ring);
+      setTimeout(() => ring.remove(), 1300);
+    }
+    
+    function createLightning() {
+      const lightning = document.createElement('div');
+      lightning.className = 'lightning';
+      lightning.style.left = `${20 + Math.random() * 60}%`;
+      lightning.style.top = '5%';
+      announcementScreen.appendChild(lightning);
+      setTimeout(() => lightning.remove(), 600);
+    }
+    
+    function addScanLine() {
+      const scanLine = document.createElement('div');
+      scanLine.className = 'scan-line';
+      announcementScreen.appendChild(scanLine);
+      setTimeout(() => scanLine.remove(), 2000);
+    }
+    
+    // Screen helpers
+    function showScreen(screen) {
+      screen.classList.remove('hidden');
+      screen.classList.add('fade-in');
+    }
+    
+    function hideScreen(screen) {
+      screen.classList.add('fade-out');
+      setTimeout(() => {
+        screen.classList.add('hidden');
+        screen.classList.remove('fade-out', 'fade-in');
+      }, 700);
+    }
+    
+    // ========== RESET BACKGROUND ==========
+    function resetBgCelebration() {
+      bgCelebration.className = 'bg-celebration'; // remove all animation classes
+    }
+    
+    // ========== EVENT LISTENERS ==========
+    enterBtn.addEventListener('click', () => {
+      playSystemActivate();
+      hideScreen(standbyScreen);
+      setTimeout(() => {
+        showScreen(controlPanel);
+        controlPanel.classList.add('fade-slide-right');
+      }, 700);
+    });
+    
+    backBtn.addEventListener('click', () => {
+      hideScreen(controlPanel);
+      setTimeout(() => {
+        enterBtn.classList.remove('hidden');
+        startAnnouncementBtn.classList.add('hidden');
+        showScreen(standbyScreen);
+      }, 700);
+    });
+    
+    lockBtn.addEventListener('click', () => {
+      winners.first = document.getElementById('input1').value || 'Champion';
+      winners.second = document.getElementById('input2').value || 'Runner Up';
+      winners.third = document.getElementById('input3').value || 'Third Place';
+      playSystemActivate();
+      hideScreen(controlPanel);
+      setTimeout(() => {
+        enterBtn.classList.add('hidden');
+        startAnnouncementBtn.classList.remove('hidden');
+        showScreen(standbyScreen);
+      }, 700);
+    });
+    
+    startAnnouncementBtn.addEventListener('click', () => {
+      playSystemActivate();
+      currentAnnouncement = 0;
+      resetBgCelebration();
+      hideScreen(standbyScreen);
+      setTimeout(() => {
+        showScreen(announcementScreen);
+        startAnnouncementSequence();
+      }, 700);
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      nextBtn.classList.add('hidden');
+      currentAnnouncement++;
+      if (currentAnnouncement === 1) {
+        showJuara2();
+      } else if (currentAnnouncement === 2) {
+        showJuara1();
+      }
+    });
+    
+    restartBtn.addEventListener('click', () => {
+      restartBtn.classList.add('hidden');
+      resetBgCelebration();
+      particleContainer.innerHTML = '';
+      hideScreen(announcementScreen);
+      setTimeout(() => {
+        document.getElementById('input1').value = '';
+        document.getElementById('input2').value = '';
+        document.getElementById('input3').value = '';
+        enterBtn.classList.remove('hidden');
+        startAnnouncementBtn.classList.add('hidden');
+        showScreen(standbyScreen);
+      }, 700);
+    });
+    
+    // ========== ANNOUNCEMENT SEQUENCES ==========
+    function startAnnouncementSequence() {
+      announcementContent.innerHTML = `
+        <div class="font-rajdhani text-gray-500 text-xl tracking-widest mb-8">
+          INITIALIZING CEREMONY PROTOCOL...
+        </div>
+        <div class="font-orbitron text-[#FF1E1E] text-3xl text-glow">
+          PREPARING ANNOUNCEMENT
+        </div>
+      `;
+      playSuspense();
+      setTimeout(() => { showJuara3(); }, 3000);
+    }
+    
+    // 🥉 JUARA 3
+    function showJuara3() {
+      resetBgCelebration();
+      bgCelebration.classList.add('bg-bronze-shimmer'); // Background meriah bronze
+      addScanLine();
+      playDrumroll(2000);
+      
+      announcementContent.innerHTML = `
+        <div class="font-rajdhani text-gray-400 text-xl tracking-widest mb-4">
+          Initial Recognition Phase...
+        </div>
+        <div class="font-orbitron text-4xl md:text-5xl text-white text-glow mb-8">
+          THIRD POSITION
+        </div>
+      `;
+      
+      setTimeout(() => {
+        playImpact();
+        for (let i = 0; i < 3; i++) setTimeout(() => createPulseRing('#CD7F32'), i * 200);
+        for (let i = 0; i < 4; i++) setTimeout(() => createLightning(), i * 150);
+        createSparks(50);
+        createFireBurst(25);
+        announcementScreen.classList.add('shake');
+        setTimeout(() => announcementScreen.classList.remove('shake'), 400);
+        
+        announcementContent.innerHTML = `
+          <div style="perspective: 1000px;">
+            <div class="medal-bounce text-8xl md:text-9xl mb-8">🥉</div>
+            <div class="name-reveal">
+              <div class="font-orbitron text-3xl md:text-4xl text-[#CD7F32] text-glow-mega mb-4">JUARA 3</div>
+              <div class="font-orbitron text-5xl md:text-7xl text-white text-glow-mega">${winners.third}</div>
+            </div>
+          </div>
+        `;
+        createConfetti(35);
+        setTimeout(() => { nextBtn.classList.remove('hidden'); }, 3800);
+      }, 2400);
+    }
+    
+    // 🥈 JUARA 2
+    function showJuara2() {
+      resetBgCelebration();
+      bgCelebration.classList.add('bg-silver-pulse'); // Background meriah silver
+      addScanLine();
+      announcementScreen.classList.add('glitch');
+      setTimeout(() => announcementScreen.classList.remove('glitch'), 300);
+      
+      announcementContent.innerHTML = `
+        <div class="font-rajdhani text-gray-400 text-xl tracking-widest mb-4">
+          Performance Escalating...
+        </div>
+        <div class="font-orbitron text-4xl md:text-5xl text-white text-glow mb-8">
+          SECOND POSITION
+        </div>
+      `;
+      
+      playDrumroll(2500);
+      
+      setTimeout(() => {
+        playImpact();
+        for (let i = 0; i < 4; i++) {
+          setTimeout(() => createPulseRing('rgba(192, 192, 192, ' + (1 - i * 0.25) + ')'), i * 150);
+        }
+        for (let i = 0; i < 5; i++) setTimeout(() => createLightning(), i * 120);
+        createSparks(60);
+        createFireBurst(35);
+        createConfetti(50);
+        announcementScreen.classList.add('shake');
+        setTimeout(() => announcementScreen.classList.remove('shake'), 400);
+        
+        announcementContent.innerHTML = `
+          <div style="perspective: 1000px;">
+            <div class="medal-bounce text-8xl md:text-9xl mb-8">🥈</div>
+            <div class="name-reveal">
+              <div class="font-orbitron text-3xl md:text-4xl text-gray-300 text-glow-mega mb-4">JUARA 2</div>
+              <div class="font-orbitron text-5xl md:text-7xl text-white text-glow-mega">${winners.second}</div>
+            </div>
+          </div>
+        `;
+        setTimeout(() => { nextBtn.classList.remove('hidden'); }, 4000);
+      }, 3000);
+    }
+    
+    // 🥇 JUARA 1 - GRAND IMPACT dengan background paling meriah
+    function showJuara1() {
+      resetBgCelebration();
+      bgCelebration.classList.add('bg-gold-explosion'); // Background emas berapi
+      
+      announcementContent.innerHTML = '';
+      announcementScreen.style.background = '#000';
+      
+      setTimeout(() => {
+        showCountdown(3, () => {
+          showCountdown(2, () => {
+            showCountdown(1, () => {
+              playImpact();
+              playVictory();
+              
+              // Epic effects
+              createExplosion();
+              createFireBurst(80);
+              createConfetti(200);
+              createSparks(100);
+              
+              for (let i = 0; i < 5; i++) {
+                setTimeout(() => createPulseRing('rgba(255, 215, 0, ' + (1 - i * 0.15) + ')'), i * 120);
+              }
+              for (let i = 0; i < 10; i++) setTimeout(() => createLightning(), i * 100);
+              
+              announcementScreen.classList.add('shake');
+              announcementScreen.style.background = '';
+              
+              announcementContent.innerHTML = `
+                <div style="perspective: 1000px;">
+                  <div class="medal-bounce text-9xl md:text-10xl mb-10">🥇</div>
+                  <div class="name-reveal">
+                    <div class="font-orbitron text-3xl md:text-4xl text-[#FFD700] text-glow-mega mb-6">JUARA 1</div>
+                    <div class="font-orbitron text-6xl md:text-8xl text-white text-glow-mega">${winners.first}</div>
+                    <div class="font-rajdhani text-lg md:text-2xl text-gray-400 tracking-wider mt-10">
+                      "Relentless Effort Powered by Smart Automation"
+                    </div>
+                  </div>
+                </div>
+              `;
+              
+              // Continuous celebration
+              const effectInterval = setInterval(() => {
+                createSparks(20);
+                createConfetti(25);
+              }, 600);
+              
+              setTimeout(() => {
+                clearInterval(effectInterval);
+                announcementScreen.classList.remove('shake');
+                restartBtn.classList.remove('hidden');
+              }, 6000);
+            });
+          });
+        });
+      }, 1000);
+    }
+    
+    // Countdown display
+    function showCountdown(num, callback) {
+      playTone(440, 0.2, 'square', 0.4);
+      announcementContent.innerHTML = `
+        <div class="countdown-num font-orbitron text-9xl md:text-10xl text-[#FF1E1E] text-glow-mega">${num}</div>
+      `;
+      setTimeout(callback, 800);
+    }
+    
+    // Element SDK (dibiarkan apa adanya)
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          if (mainTitle) mainTitle.textContent = config.main_title || defaultConfig.main_title;
+          if (taglineText) taglineText.textContent = `"${config.tagline || defaultConfig.tagline}"`;
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            { get: () => config.background_color || defaultConfig.background_color, set: (value) => { config.background_color = value; window.elementSdk.setConfig({ background_color: value }); } },
+            { get: () => config.primary_color || defaultConfig.primary_color, set: (value) => { config.primary_color = value; window.elementSdk.setConfig({ primary_color: value }); } },
+            { get: () => config.secondary_color || defaultConfig.secondary_color, set: (value) => { config.secondary_color = value; window.elementSdk.setConfig({ secondary_color: value }); } },
+            { get: () => config.text_color || defaultConfig.text_color, set: (value) => { config.text_color = value; window.elementSdk.setConfig({ text_color: value }); } },
+            { get: () => config.accent_color || defaultConfig.accent_color, set: (value) => { config.accent_color = value; window.elementSdk.setConfig({ accent_color: value }); } }
+          ],
+          borderables: [],
+          fontEditable: { get: () => config.font_family || 'Orbitron', set: (value) => { config.font_family = value; window.elementSdk.setConfig({ font_family: value }); } },
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['main_title', config.main_title || defaultConfig.main_title],
+          ['tagline', config.tagline || defaultConfig.tagline]
+        ])
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd07de380efb573',t:'MTc3MDk0NTUwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
